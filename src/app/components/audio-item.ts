@@ -1,5 +1,5 @@
 import {Component, ChangeDetectionStrategy, Output, Input, EventEmitter} from "@angular/core";
-import {IAudio} from "../reducers/audioReducer";
+import {IAudiodata} from "../reducers/audioReducer";
 
 @Component({
     selector: 'audio-item',
@@ -14,6 +14,6 @@ import {IAudio} from "../reducers/audioReducer";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AudioItem{
-    @Input() audio: IAudio;
-    @Output() addToPlaylist: EventEmitter<IAudio> = new EventEmitter<IAudio>();
+    @Input() audio: IAudiodata;
+    @Output() addToPlaylist: EventEmitter<IAudiodata> = new EventEmitter<IAudiodata>();
 }

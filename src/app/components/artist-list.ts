@@ -1,10 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from "@angular/core";
-import { Observable, Subject } from 'rxjs';
-import {Store, Action} from "@ngrx/store";
 
 import {ArtistItem} from "./artist-item";
-import {IArtist} from "../reducers/artistsReducer";
-import {IAudio} from "../reducers/audioReducer";
 
 @Component({
     selector: 'artist-list',

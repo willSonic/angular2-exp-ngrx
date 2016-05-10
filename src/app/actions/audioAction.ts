@@ -1,7 +1,11 @@
 import {Action} from "@ngrx/store";
-import {artists, ADD_TO_PLAYLIST, IArtist} from "../reducers/artistsReducer";
-import {AUDIODOWNLOAD_REQUEST} from "../reducers/audioReducer";
+import {ADD_TO_PLAYLIST, REQUEST_AUDIODATA, IAudiodata} from "../reducers/audioReducer";
 
-export const downloadAudio = (artist: IArtist) => {
-    return <Action>{ type: AUDIODOWNLOAD_REQUEST, payload: artist };
+
+export const fetchAudio = () => {
+    return <Action>{ type: REQUEST_AUDIODATA };
+}
+
+export const addToPlaylist = (IAudiodata: IAudiodata) => {
+    return <Action>{ type: ADD_TO_PLAYLIST, payload: IAudiodata };
 }

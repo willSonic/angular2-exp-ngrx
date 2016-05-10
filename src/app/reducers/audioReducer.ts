@@ -1,41 +1,32 @@
 import {Reducer, Action} from "@ngrx/store";
-import {IArtist, ADD_TO_PLAYLIST} from './artistsReducer';
 
-export const AUDIODOWNLOAD_REQUEST = 'AUDIODOWNLOAD_REQUEST'
-export const AUDIODOWNLOAD_SUCCESS = 'AUDIODOWNLOAD_SUCCESS'
-export const AUDIODOWNLOAD_FAILURE = 'AUDIODOWNLOAD_FAILURE'
+export const ADD_TO_PLAYLIST= 'ADD_TO_PLAYLIST';
+export const REQUEST_AUDIODATA = 'REQUEST_AUDIODATA';
+export const RECEIVED_AUDIODATA = 'RECEIVED_AUDIODATA';
 
-export interface IAudio {
-    id:string;
-    artist:IArtist;
-    binaryBuffer:ArrayBuffer;
+
+export interface IAudiodata {
+    id:number;
+    audiobuffer: ArrayBuffer;
 }
 
-
-export const audio: Reducer<{}> = (state: any = {}, action: Action) => {
+export const audiobytes: Reducer<{}> = (state: any = {}, action: Action) => {
     switch (action.type) {
-        case AUDIODOWNLOAD_REQUEST:
-            if (state.audioArtistIds.indexOf(action.payload) !== -1) {
-                return Object.assign({},
-                    state,
-                    { loadedById:
-                        Object.assign({}, state.loadedById,
-                            {[action.payload]: (state.loadedById[action.payload] || 0) + 1}
-                        )
-                    }
-                );
-            }
+        case RECEIVED_AUDIODATA:
             return Object.assign({},
-                    state,
-                    { artistIds: [...state.audioArtistIds, action.payload],
-                        quantityById:
-                            Object.assign({}, state.loadedById,
-                                {[action.payload]: (state.loadedById[action.payload] || 0) + 1}
-                            )
-                    }
-                );
-        case AUDIODOWNLOAD_SUCCESS:
-            return ;
+                state,
+                action.payload.reduce((obj, audiodata ) => {
+                    console.log("audiobytes - -", audiodata);
+                    obj[audiodata.id] = audiodata;
+                    return obj;
+                }, {})
+            );
+        case ADD_TO_PLAYLIST:
+            return Object.assign({}, state, {
+                [action.payload]: Object.assign({}, state[action.payload], {
+                    inventory: state[action.payload].inventory - 1
+                })
+            });
         default:
             return state;
     }

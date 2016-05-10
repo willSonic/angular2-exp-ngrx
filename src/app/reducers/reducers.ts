@@ -1,7 +1,7 @@
 import {artists} from "./artistsReducer";
-import {audio} from "./audioReducer";
+import {audiobytes} from "./audioReducer";
 
 export const APP_REDUCERS = {
     artists,
-    audio
+    audiobytes
 };

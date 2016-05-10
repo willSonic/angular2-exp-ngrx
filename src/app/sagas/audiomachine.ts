@@ -1,39 +1,37 @@
 import {Http} from '@angular/http';
 import {createSaga, Saga, whenAction, toPayload} from 'store-saga';
-import {REQUEST_ARTISTS, RECEIVED_ARTISTS} from '../reducers/artistsReducer';
-import {AUDIODOWNLOAD_REQUEST, AUDIODOWNLOAD_FAILURE, AUDIODOWNLOAD_SUCCESS} from '../reducers/audioReducer';
-import * as artists from '../../api/artistRemote';
-import  * as audiomachine from '../../api/audiomachineRemote';
+import {REQUEST_ARTISTS, RECEIVED_ARTISTS, RECEIVED_ERROR} from '../reducers/artistsReducer';
+import {REQUEST_AUDIODATA, RECEIVED_AUDIODATA}from '../reducers/audioReducer';
+import  * as ArtistAPI from  '../../api/artistAPI';
+import  * as AudioAPI  from  '../../api/audioAPI';
 import { Observable } from 'rxjs/Observable';
 
-
-const artistFetch = () => {
+const artistFetch =() => {
     return saga$ => saga$
-        .filter(whenAction(REQUEST_ARTISTS))
-        .mergeMap(() => artists.default.getArtists(300))
-        .map(res => {
-            return {
-                type: REQUEST_ARTISTS,
-                payload: res
-            };
-        });
+         .filter(whenAction(REQUEST_ARTISTS))
+         .mergeMap(()  => ArtistAPI.default.getArtists(300))
+         .map(res => {
+                return {
+                    type: RECEIVED_ARTISTS,
+                    payload: res
+               };
+         });
 };
 
-const audioLoad = () => {
+
+const fetchAudio = () => {
     return saga$ => saga$
-        .filter(whenAction(AUDIODOWNLOAD_REQUEST))
-        .map(toPayload)
-        .mergeMap(payload => audiomachine.getTrack(payload))
+        .filter(whenAction(REQUEST_AUDIODATA))
+        .mergeMap(() => AudioAPI.default.getTrack("https://upload.wikimedia.org/wikipedia/en/d/db/Rapper%27s_Delight_sample.ogg"))
         .map(res => {
-            return {
-                type: AUDIODOWNLOAD_SUCCESS,
-                payload: res
-            };
+                return {
+                    type: RECEIVED_AUDIODATA,
+                    payload: res
+                };
         });
 };
-
 
 export default [
     artistFetch,
-    audioLoad
+    fetchAudio
 ].map(effect => createSaga(effect));

@@ -3,7 +3,7 @@ import { Subject, Observable } from 'rxjs';
 import {Store, Action} from "@ngrx/store";
 
 import {AudioItem} from "./audio-item";
-import {IAudio} from "../reducers/audioReducer";
+import {IAudiodata} from "../reducers/audioReducer";
 
 @Component({
     selector: 'audio-list',
@@ -22,6 +22,6 @@ import {IAudio} from "../reducers/audioReducer";
     directives: [AudioItem]
 })
 export class AudioList {
-    @Input() audios: IAudio[];
-    @Output() playAudio = new EventEmitter<IAudio>();
+    @Input() audios: IAudiodata[];
+    @Output() playAudio = new EventEmitter<IAudiodata>();
 }
