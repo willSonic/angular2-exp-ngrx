@@ -6,6 +6,6 @@ export const fetchAudio = () => {
     return <Action>{ type: REQUEST_AUDIODATA };
 }
 
-export const addToPlaylist = (IAudiodata: IAudiodata) => {
+export const playArtistTrack = (IAudiodata: IAudiodata) => {
     return <Action>{ type: ADD_TO_PLAYLIST, payload: IAudiodata };
 }

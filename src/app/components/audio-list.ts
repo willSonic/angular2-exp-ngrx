@@ -8,7 +8,7 @@ import {IAudiodata} from "../reducers/audioReducer";
 @Component({
     selector: 'audio-list',
     template: `
-        Tracks 
+        <h1 class="brand-label">Tracks</h1>
         <ul>
             <audio-item
                 *ngFor="let audio of audios"

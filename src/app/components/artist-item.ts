@@ -10,11 +10,11 @@ import {IArtist} from "../reducers/artistsReducer";
             <div class="media-body">
               <h3 class="media-heading contact-name">{{artistItem.artistName}}
                 <span *ngIf="selected">&bull;</span>
-                <small class="">{{artistItem.trackTitle}}</small>
+                <small class="track-title">{{artistItem.trackTitle}}</small>
               </h3>
             </div>
-            <div class="pull-left">="addToCart.emit(product)"
-                  <a (click)="clicked($event)" class="video-thumbnail">
+            <div class="pull-left">
+                  <a (click)="addToPlaylist.emit(artistItem)" class="video-thumbnail">
                       <img class="media-object avatar video-mask"  src="{{artistItem.albumImgSrc}}">
                       
                       <div class="play-icon"></div>

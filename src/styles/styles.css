@@ -45,6 +45,10 @@ h3 {
     margin: 3em auto;
 }
 
+.track-title{
+   color: rgb(61, 146, 201);
+}
+
 .sidebar {
     background: rgb(61, 79, 93);
     color: #fff;
@@ -199,7 +203,7 @@ h3 {
 .video-thumbnail {
     display: block;
     border: 1px solid #cbcbcb;
-    background: transparent url(https://dl.dropboxusercontent.com/u/2065970/video-still.jpg) no-repeat 0 0;
+    background: transparent  no-repeat 0 0;
     width: 220px;
     height: 220px;
     position: relative;
@@ -223,7 +227,7 @@ h3 {
     z-index: 7;
 }
 .play-icon {
-    background: #27a8cb url(https://dl.dropboxusercontent.com/u/2065970/vs-shape.png) no-repeat 50% 50%;
+    background: #27a8cb no-repeat 50% 50%;
     width: 64px;
     height: 64px;
     border-radius: 32px;
