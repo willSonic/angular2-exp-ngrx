@@ -1,26 +1,31 @@
 import {Component, ChangeDetectionStrategy, Output, Input, EventEmitter} from "@angular/core";
+import {IArtist} from "../reducers/artistsReducer";
+
 
 @Component({
     selector: 'artist-item',
     template: `
-    <li class="margin-t-20">
+    <li class="margin-t-20 pure-menu-item">
           <div class="media conversation">
-            <div class="pull-left">
-              <img class="media-object avatar" 
-                   src="{{artistItem.albumImgSrc}}">
-            </div>
             <div class="media-body">
-              <h5 class="media-heading contact-name">{{artistItem.artistName}}
+              <h3 class="media-heading contact-name">{{artistItem.artistName}}
                 <span *ngIf="selected">&bull;</span>
-              </h5>
-              <small class="message-preview">{{artistItem.trackTitle}}</small>
+                <small class="">{{artistItem.trackTitle}}</small>
+              </h3>
             </div>
-            <a (click)="clicked($event)" class="div-link">Select</a>
+            <div class="pull-left">="addToCart.emit(product)"
+                  <a (click)="clicked($event)" class="video-thumbnail">
+                      <img class="media-object avatar video-mask"  src="{{artistItem.albumImgSrc}}">
+                      
+                      <div class="play-icon"></div>
+                   </a>
+            </div>
           </div>
     </li>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArtistItem {
-    @Input() artistItem: any;
+    @Input() artistItem: IArtist;
+    @Output() addToPlaylist: EventEmitter<IArtist> = new EventEmitter<IArtist>();
 }

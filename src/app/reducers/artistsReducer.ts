@@ -21,12 +21,14 @@ export const artists: Reducer<{}> = (state: any = {}, action: Action) => {
             return Object.assign({},
                 state,
                 action.payload.reduce((obj, artist) => {
+                    console.log("artists - -", artist);
                     obj[artist.id] = artist;
                     return obj;
                 }, {})
             );
         case ADD_TO_PLAYLIST:
-            return Object.assign({}, state, {
+            return Object.assign({}, 
+                 state, {
                 [action.payload]: Object.assign({}, state[action.payload], {
                     inventory: state[action.payload].inventory - 1
                 })

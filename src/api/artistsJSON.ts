@@ -1,6 +1,6 @@
 export const jsonArtists = [
   { "id": 1,
-    "artistNartistNameame": "The Sugarhill Gang",
+    "artistName": "The Sugarhill Gang",
     "trackTitle": "The Message",
     "albumImgSrc": "https://upload.wikimedia.org/wikipedia/en/thumb/f/fa/Rappersdelight.jpeg/220px-Rappersdelight.jpeg",
     "trackURL": "https://upload.wikimedia.org/wikipedia/en/d/db/Rapper%27s_Delight_sample.ogg"},

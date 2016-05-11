@@ -1,26 +1,24 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from "@angular/core";
 
 import {ArtistItem} from "./artist-item";
+import {IArtist} from "../reducers/artistsReducer";
+
 
 @Component({
     selector: 'artist-list',
     template: `
-        Cart
-        <ul *ngIf="artistList">
+        <h1 class="brand-label">Artist</h1>
+        <ul *ngIf="artistList" class="pure-menu-list">
             <artist-item
                 *ngFor="let artistItem of artistList"
                 [artistItem]="artistItem">
             </artist-item>
         </ul>
-        <button class="pure-button pure-button-primary"
-            (click)="artistList.emit($event)">
-            Checkout
-         </button>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     directives: [ArtistItem]
 })
 export class ArtistList {
-    @Input() artistList: any;
-    @Output() checkout = new EventEmitter<any>();
+    @Input() artistList: IArtist[];
+    @Output() addToPlaylist = new EventEmitter<IArtist>();
 }

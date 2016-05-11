@@ -1,6 +1,7 @@
 import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {ArtistList} from "./components/artist-list";
 import {getArtists, addToPlaylist} from "./actions/artistsAction";
+import {getArtists, playArtistTrack} from "./actions/audioAction";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
 import {IArtist} from "./reducers/artistsReducer";
 import {AsyncPipe} from "@angular/common";
@@ -18,10 +19,16 @@ import {Store, Action} from "@ngrx/store";
 			</div>
 		</div>
 		<div class="content pure-u-1 pure-u-md-3-4">
-			<artist-list
-				[artist]="(artists | async)"
-                (addToPlaylist)="actions$.next(addArtistToPlaylist($event))">
-			</artist-list>
+		      <div class="pure-menu custom-restricted-width">
+                    <artist-list
+                        [artistList]="(artistList | async)"
+                        (addToPlaylist)="actions$.next(addArtistToPlaylist($event))">
+                    </artist-list>
+                    <audio-list
+                        [audioList]="(audioList | async)"
+                        (playArtistTrack)="actions$.next(playArtistInPlayList($event))">
+                    </audio-list>
+              </div>
 		</div>
 	</div>
 	`,
@@ -31,14 +38,20 @@ import {Store, Action} from "@ngrx/store";
 })
 export class ArtistPlaylistApp {
 
-    artists: any;
+    artistList: any;
+    audioList: any;
+    audioItem
+
+
     actions$ = new Subject<Action>();
 
     addArtistToPlaylist = addToPlaylist;
+    playArtistInPlayList = playArtistTrack;
 
     constructor(public store: Store<any>) {
-        this.artists  = store.let(artistAsArraySelector);
-
+        this.artistList = store.let(artistAsArraySelector);
+        
+        
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
     }

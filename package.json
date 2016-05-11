@@ -1,8 +1,9 @@
 {
-  "name": "angualr2-exp-ngrx",
+  "name": "ng2-ngrx-shopping-cart",
   "version": "0.0.1",
-  "description": "Angular Loading",
-   "scripts": {
+  "description": "angular 2 ngrx shopping-cart example",
+  "main": "",
+  "scripts": {
     "build": "npm run webpack --colors --display-error-details --display-cached",
     "webpack": "webpack",
     "clean": "rimraf node_modules",

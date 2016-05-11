@@ -7,5 +7,5 @@ export const getArtists = () => {
 }
 
 export const addToPlaylist = (artist: IArtist) => {
-    return <Action>{ type: ADD_TO_PLAYLIST, payload: artist.id };
+    return <Action>{ type: ADD_TO_PLAYLIST, payload: artist };
 }
