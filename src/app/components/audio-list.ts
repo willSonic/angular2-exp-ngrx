@@ -4,15 +4,16 @@ import {Store, Action} from "@ngrx/store";
 
 import {AudioItem} from "./audio-item";
 import {IAudiodata} from "../reducers/audioReducer";
+import {IPlaylist} from "../reducers/playlistReducer";
 
 @Component({
     selector: 'audio-list',
     template: `
-        <h1 class="brand-label">Tracks</h1>
-        <ul>
+        <h1 class="brand-label">Track</h1>
+        <ul  *ngIf="audioList.length > 0" >
             <audio-item
-                *ngFor="let audio of audios"
-                [audio]="audio"
+                *ngFor="let audioItem of audioList"
+                [audioItem]="audioItem"
                 (playAudio)="playAudio.emit($event)">
             </audio-item>
         </ul>
@@ -22,6 +23,6 @@ import {IAudiodata} from "../reducers/audioReducer";
     directives: [AudioItem]
 })
 export class AudioList {
-    @Input() audios: IAudiodata[];
+    @Input() audioList: IPlaylist[];
     @Output() playAudio = new EventEmitter<IAudiodata>();
 }
