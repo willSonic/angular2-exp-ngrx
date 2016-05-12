@@ -5,5 +5,6 @@ import {IArtist} from "../reducers/artistsReducer";
 
 
 export const addArtistToPlaylist = (artist: IArtist) => {
+     console.log(" playlistAction -- artist =", artist);
     return <Action>{ type: ADD_ARTIST_TO_PLAYLIST, payload: artist };
 }

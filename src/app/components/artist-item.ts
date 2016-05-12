@@ -2,6 +2,8 @@ import {Component, ChangeDetectionStrategy, Output, Input, EventEmitter} from "@
 import {IArtist} from "../reducers/artistsReducer";
 
 
+//
+
 @Component({
     selector: 'artist-item',
     template: `
@@ -14,7 +16,7 @@ import {IArtist} from "../reducers/artistsReducer";
               </h3>
             </div>
             <div class="pull-left">
-                  <a (click)="addToPlaylist.emit(artistItem)" class="video-thumbnail">
+                  <a (click)="addArtistToPlaylist.emit(artistItem)" class="video-thumbnail">
                       <img class="media-object avatar video-mask"  src="{{artistItem.albumImgSrc}}">
                       
                       <div class="play-icon"></div>
@@ -26,6 +28,6 @@ import {IArtist} from "../reducers/artistsReducer";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArtistItem {
-    @Input() artistItem: IArtist;
-    @Output() addToPlaylist: EventEmitter<IArtist> = new EventEmitter<IArtist>();
+    @Input()  artistItem: IArtist;
+    @Output() addArtistToPlaylist: EventEmitter<IArtist> = new EventEmitter<IArtist>();
 }

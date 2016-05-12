@@ -2,6 +2,7 @@ import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from "@
 
 import {ArtistItem} from "./artist-item";
 import {IArtist} from "../reducers/artistsReducer";
+import {IPlaylist} from "../reducers/playlistReducer";
 
 
 @Component({
@@ -10,8 +11,10 @@ import {IArtist} from "../reducers/artistsReducer";
         <h1 class="brand-label">Artist</h1>
         <ul *ngIf="artistList" class="pure-menu-list">
             <artist-item
+                (addArtistToPlaylist)="addArtistToPlaylist.emit($event)"
                 *ngFor="let artistItem of artistList"
-                [artistItem]="artistItem">
+                [artistItem]="artistItem"
+                >
             </artist-item>
         </ul>
     `,
@@ -20,5 +23,5 @@ import {IArtist} from "../reducers/artistsReducer";
 })
 export class ArtistList {
     @Input() artistList: IArtist[];
-    @Output() addToPlaylist = new EventEmitter<IArtist>();
+    @Output() addArtistToPlaylist = new EventEmitter<IArtist>();
 }

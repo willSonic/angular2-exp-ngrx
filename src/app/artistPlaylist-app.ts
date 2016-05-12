@@ -24,7 +24,7 @@ import {Store, Action} from "@ngrx/store";
 		      <div class="pure-u-1-2 custom-restricted-width">
                     <artist-list
                         [artistList]="(artistList | async)"
-                        (addToPlaylist)="actions$.next(addArtistToPlaylist($event))">
+                        (addArtistToPlaylist)="actions$.next(addToPlaylistAction($event))">
                     </artist-list>
               </div>
 		      <div class="pure-u-1-2 custom-restricted-width">
@@ -49,7 +49,7 @@ export class ArtistPlaylistApp {
 
     actions$ = new Subject<Action>();
 
-    addArtistToPlaylist = addArtistToPlaylist;
+    addToPlaylistAction  = addArtistToPlaylist;
     playArtistInPlayList = playArtistTrack;
 
     constructor(public store: Store<any>) {
