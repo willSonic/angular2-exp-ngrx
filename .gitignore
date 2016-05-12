@@ -1,5 +1,6 @@
 .idea
-/*/node_modules
+node_modules
+typings
 npm-debug.log
 .DS_Store
 /*/typings
