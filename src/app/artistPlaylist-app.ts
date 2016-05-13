@@ -23,13 +23,13 @@ import {Store, Action} from "@ngrx/store";
 		</div>
 		<div class="content pure-u-1">
 		   <div class="pure-g">
-		      <div class="pure-u-1-2">
+		      <div class="pure-u-1-3">
                     <artist-list
                         [artistList]="(artistList | async)"
                         (addArtistToPlaylist)="actions$.next(addToPlaylistAction($event))">
                     </artist-list>
               </div>
-		      <div class=" pure-u-1-2 custom-restricted-width">
+		      <div class=" pure-u-1-3 custom-restricted-width">
                     <audio-list
                         [audioList]="(audioList | async)"
                         (playArtistTrack)="actions$.next(playArtistInPlayList($event))">

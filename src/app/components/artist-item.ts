@@ -25,7 +25,6 @@ import {IArtist} from "../reducers/artistsReducer";
           </div>
     </li>
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArtistItem {
     @Input()  artistItem: IArtist;
