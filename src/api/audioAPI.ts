@@ -5,7 +5,7 @@ import "rxjs/Rx";
 
 export default {
     getTrack(URL:string): Observable<any[]> {
-
+       console.log('getTrack URL =' + URL)
         return Observable.create(observer=> {
             let req = new XMLHttpRequest();
             console.log('AudioMachineRemote URL =' + URL)

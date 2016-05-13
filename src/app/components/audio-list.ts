@@ -10,7 +10,7 @@ import {IPlaylist} from "../reducers/playlistReducer";
     selector: 'audio-list',
     template: `
         <h1 class="brand-label">Track</h1>
-        <ul  *ngIf="audioList" >
+        <ul  *ngIf="audioList" class="audio-list">
             <audio-item
                 *ngFor="let audioItem of audioList"
                 [audioItem]="audioItem"

@@ -1,4 +1,5 @@
 import {Reducer, Action} from "@ngrx/store";
+import {IArtist} from "./artistsReducer";
 
 export const ADD_TO_PLAYLIST= 'ADD_TO_PLAYLIST';
 export const REQUEST_AUDIODATA = 'REQUEST_AUDIODATA';
@@ -6,7 +7,7 @@ export const RECEIVED_AUDIODATA = 'RECEIVED_AUDIODATA';
 
 
 export interface IAudiodata {
-    id:number;
+    artist:IArtist;
     audiobuffer: ArrayBuffer;
 }
 
@@ -21,12 +22,6 @@ export const audiobytes: Reducer<{}> = (state: any = {}, action: Action) => {
                     return obj;
                 }, {})
             );
-        case ADD_TO_PLAYLIST:
-            return Object.assign({}, state, {
-                [action.payload]: Object.assign({}, state[action.payload], {
-                    inventory: state[action.payload].inventory - 1
-                })
-            });
         default:
             return state;
     }

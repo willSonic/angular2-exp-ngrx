@@ -1,7 +1,7 @@
 {
-  "name": "Audio Artist NGRX-store",
+  "name": "Angular2-ngrx-EXP",
   "version": "0.0.1",
-  "description": "angular 2 ngrx shopping-cart example",
+  "description": "using wikipedia sounds to experiement with ngrx store",
   "main": "",
   "scripts": {
     "build": "npm run webpack --colors --display-error-details --display-cached",
@@ -17,7 +17,7 @@
     "start": "npm run server:dev",
     "test": "karma start"
   },
-  "author": "thomas.sattlecker@gmail.com",
+  "author": "will.streeter@gmail.com",
   "license": "MIT",
   "dependencies": {
     "@ngrx/store": "^1.5.0",
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/btroncone/ngrx-examples"
+    "url": "https://github.com/willSonic/angular2-exp-ngrx"
   },
   "devDependencies": {
     "@ngrx/devtools": "^1.4.0",

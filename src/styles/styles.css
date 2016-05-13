@@ -34,7 +34,7 @@ h3 {
     font-weight: 300;
     color: rgb(53, 85, 102);
 }
-
+.audio-list,
 .artist-list{
     list-style: none;
 }
