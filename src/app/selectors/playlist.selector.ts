@@ -8,14 +8,23 @@ export const playlistArraySelector = (store: any) => store.select(STORE_SLICE_NA
                        .map(res => res.audioList);
 
 
-/*export const attachAudioData = (store: any) => Observable
+export const attachAudioData = (store: any) => Observable
     .combineLatest(store.let(playlistArraySelector), store.let(audioSelector))
     .map((res: any) => {
-        return res[0].artist.map(productId => {
-            return {
-                title: res[1][productId].title,
-                price: res[1][productId].price,
-                quantity: res[0].quantityById[productId]
-            };
-        });
-    });*/
+        console.log("artistReducer --res[0] ", res[0]);
+        console.log("artistReducer --res[1] ", res[1]);
+        if(res[0].length>0 ){
+          var newResult = Object.keys(res[0]).map(key => res[0][key]).map ( value =>{
+              var obj;
+               console.log("artistReducer --value ", value);
+               if(value.id === res[1].artist.id){
+                    obj =  Object.assign({}, value, res[1].artistAudioBuffer)
+               }
+               return obj;
+            });
+            console.log("artistReducer --newResult ", newResult);
+            return newResult
+        }else{
+           return res[0]
+        }
+    });

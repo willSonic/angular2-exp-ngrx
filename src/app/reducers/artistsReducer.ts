@@ -18,6 +18,7 @@ export interface IArtist {
 export const artists: Reducer<{}> = (state: any = {}, action: Action) => {
     switch (action.type) {
         case RECEIVED_ARTISTS:
+            console.log("artistReducer -- Recieved Artist -action.payload", action.payload);
             return Object.assign({},
                 state,
                 action.payload.reduce((obj, artist) => {

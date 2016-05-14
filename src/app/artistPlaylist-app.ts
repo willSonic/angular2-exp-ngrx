@@ -5,7 +5,7 @@ import {getArtists} from "./actions/artistsAction";
 import {addArtistToPlaylist} from "./actions/playlistAction";
 import {fetchAudio, playArtistTrack} from "./actions/audioAction";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
-import {playlistArraySelector} from "./selectors/playlist.selector";
+import {playlistArraySelector, attachAudioData} from "./selectors/playlist.selector";
 import {IArtist} from "./reducers/artistsReducer";
 import {AsyncPipe} from "@angular/common";
 import {Observable, Subject } from 'rxjs';
@@ -57,7 +57,7 @@ export class ArtistPlaylistApp {
 
     constructor(public store: Store<any>) {
         this.artistList = store.let(artistAsArraySelector);
-        this.audioList = store.let(playlistArraySelector);
+        this.audioList = store.let(attachAudioData);
 
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());

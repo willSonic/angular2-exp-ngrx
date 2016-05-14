@@ -8,20 +8,20 @@ export const RECEIVED_AUDIODATA = 'RECEIVED_AUDIODATA';
 
 export interface IAudiodata {
     artist:IArtist;
-    audiobuffer: ArrayBuffer;
+    artistAudioBuffer: ArrayBuffer;
+    downloadComplete:boolean;
 }
 
 export const audiobytes: Reducer<{}> = (state: any = {}, action: Action) => {
     switch (action.type) {
         case RECEIVED_AUDIODATA:
+             console.log("audiobytes - action -", action);
+             console.log("audiobytes - state -", state);
             return Object.assign({},
                 state,
-                action.payload.reduce((obj, audiodata ) => {
-                    console.log("audiobytes - -", audiodata);
-                    obj[audiodata.id] = audiodata;
-                    return obj;
-                }, {})
-            );
+                Object.assign({}, action.payload, {downloadComplete:true})
+                );
+
         default:
             return state;
     }
