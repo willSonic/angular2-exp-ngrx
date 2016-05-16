@@ -69,11 +69,11 @@ export class ArtistPlaylistApp {
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
-        this.audioBuffer.subscribe(function(state, audioItem){
-
-              console.log("ArtistPlaylistApp audioBuffer state =", store);
-              if(state){
-                  var audioItemState  = audioItem();
+        this.audioBuffer.subscribe(function(){
+              var audioItemState  = store.getState();
+              if(audioItemState.audioItem.artistAudioBuffer.length>0){
+                  var audioItemState  = store.getState();
+                //  store.dispatch(playAudioItem())
                   console.log("ArtistPlaylistApp audioBuffer audioItemState =", audioItemState);
               }
         });
