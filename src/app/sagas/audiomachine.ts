@@ -4,8 +4,10 @@ import {REQUEST_ARTISTS, RECEIVED_ARTISTS, RECEIVED_ERROR} from '../reducers/art
 import {REQUEST_AUDIODATA, RECEIVED_AUDIODATA}from '../reducers/audioReducer';
 import {ADD_ARTIST_TO_PLAYLIST} from '../reducers/playlistReducer';
 import {IAudiodata} from '../reducers/audioReducer';
+import {PLAY_INITIATED} from '../reducers/audioplayerReducer';
 import  * as ArtistAPI from  '../../api/artistAPI';
-import  * as AudioAPI  from  '../../api/audioAPI';
+import  * as DataLoadAPI  from  '../../api/dataloadAPI';
+import { WebAudioPlayerAPI } from '../../api/webaudioAPI';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -27,15 +29,8 @@ const fetchAudio = createSaga( function(){
      console.log('fetchAudio SAGA  callled');
     return iteration$ => iteration$
         .filter(whenAction(REQUEST_AUDIODATA))
-        /*
-
-        .map((iteration) => {
-                console.log('fetchAudio  === iteration ', iteration)
-                return  iteration;
-        })
-         */
         .mergeMap((iteration) => {
-                 return  AudioAPI.default.getTrack(iteration.action.payload.artist.trackURL)
+                 return  DataLoadAPI.default.getTrack(iteration.action.payload.artist.trackURL)
                         .map((res) => {
                                  console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
                                  return {
@@ -48,16 +43,35 @@ const fetchAudio = createSaga( function(){
                         })
 
         });
-       /* .map((res) => {
-                return {
-                    type: RECEIVED_AUDIODATA,
-                    payload: res
-                };
-        });*/
-      //  .map(res => res)
 });
+
+
+const playAudioItem = createSaga( function sagaFactory(webAudioPlayer: WebAudioPlayerAPI) {
+
+  return function playerServices(iteration$: Observable<any>) {
+     console.log('playAudioItem SAGA  callled');
+    return iteration$
+        .filter(whenAction(PLAY_INITIATED))
+        .mergeMap((iteration) => {
+                 return  webAudioPlayer.loadAudio(iteration.action.payload)
+                        .map((res) => {
+                                 console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
+                                 return {
+                                    type: RECEIVED_AUDIODATA,
+                                    payload:  Object.assign(iteration.action.payload,
+                                               {artist : iteration.action.payload.artist},
+                                               {artistAudioBuffer:res},
+                                               {downloadComplete:true})
+                                };
+                        })
+
+        });
+
+  };
+}, [Http]);
 
 export default [
     artistFetch,
-    fetchAudio
+    fetchAudio,
+    playAudioItem
 ];

@@ -7,12 +7,11 @@ export interface IPlaylist { audioList:IAudiodata[] }
 
 const initialState: IPlaylist = { audioList:[] }
 
-//const audioItem = audioItem();
 
 export const playlist: Reducer<IPlaylist> = (state: IPlaylist = initialState, action: Action) => {
     switch (action.type) {
         case ADD_ARTIST_TO_PLAYLIST:
-                console.log("playlistReducer -- ADD_ARTIST_TO_PLAYLIST  action.payload = ", action.payload);
+                //console.log("playlistReducer -- ADD_ARTIST_TO_PLAYLIST  action.payload = ", action.payload);
                 //console.log("playlistReducer -- tate.audioList.indexOf(action.payload) "+state.audioList.indexOf(action.payload) );
                 let t = state;
                 if(state.audioList.indexOf(action.payload)  < 0){

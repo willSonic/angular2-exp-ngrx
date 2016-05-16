@@ -4,7 +4,7 @@ import {IArtist} from "../reducers/artistsReducer";
 
 
 export const fetchAudio = (audiodataItem: IAudiodata) => {
-     console.log(" audioAction -- fetchAudio =", audiodataItem);
+     console.log(" audiodataAction -- fetchAudio =", audiodataItem);
     return <Action>{ type: REQUEST_AUDIODATA, payload: audiodataItem  };
 }
 

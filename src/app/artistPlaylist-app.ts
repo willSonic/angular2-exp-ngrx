@@ -2,13 +2,14 @@ import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {ArtistList} from "./components/artist-list";
 import {AudioList} from "./components/audio-list";
 import {getArtists} from "./actions/artistsAction";
+import {playAudioItem} from "./actions/audioplayerAction";
 import {addArtistToPlaylist} from "./actions/playlistAction";
-import {fetchAudio} from "./actions/audioAction";
+import {fetchAudio} from "./actions/audiodataAction";
 import {audioSelector} from "./selectors/audio.selector";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
 import {playlistArraySelector, attachAudioData} from "./selectors/playlist.selector";
 import {IArtist} from "./reducers/artistsReducer";
-import {IAudiodata} from "./reducers/audioReducer";
+import {audioItem} from "./reducers/audioReducer";
 import {AsyncPipe} from "@angular/common";
 import {Observable, Subject } from 'rxjs';
 import {Store, Action} from "@ngrx/store";
@@ -67,9 +68,19 @@ export class ArtistPlaylistApp {
 
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
+
+        this.audioBuffer.subscribe(function(state, audioItem){
+
+              console.log("ArtistPlaylistApp audioBuffer state =", store);
+              if(state){
+                  var audioItemState  = audioItem();
+                  console.log("ArtistPlaylistApp audioBuffer audioItemState =", audioItemState);
+              }
+        });
     }
 
     ngOnDestroy() {
         this.store.unsubscribe();
     }
+
 }

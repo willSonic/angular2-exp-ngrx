@@ -10,6 +10,8 @@ import audiomachineSagas from "./sagas/audiomachine";
 import {installSagaMiddleware} from 'store-saga';
 
 
+import { apiInjectables } from '../api/api.injectable.ts';
+
 /*
 *  Customized XHR repsonse to override
 */
@@ -32,6 +34,7 @@ const stateLog : Middleware = state => {
 
 export function main() {
   return bootstrap(ArtistPlaylistApp, [
+      apiInjectables,
       ELEMENT_PROBE_PROVIDERS,
       HTTP_PROVIDERS,
       provide(BrowserXhr, { useClass: CustomBrowserXhr }),
