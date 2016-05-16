@@ -1,10 +1,7 @@
 import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from "@angular/core";
-import { Subject, Observable } from 'rxjs';
-import {Store, Action} from "@ngrx/store";
 
 import {AudioItem} from "./audio-item";
 import {IAudiodata} from "../reducers/audioReducer";
-import {IPlaylist} from "../reducers/playlistReducer";
 
 @Component({
     selector: 'audio-list',
@@ -14,7 +11,8 @@ import {IPlaylist} from "../reducers/playlistReducer";
             <audio-item
                 *ngFor="let audioItem of audioList"
                 [audioItem]="audioItem"
-                (playAudio)="playAudio.emit($event)">
+                [audioBuffer]="audioItem.artistAudioBuffer"
+                (fetchAudio)="fetchAudio.emit($event)">
             </audio-item>
         </ul>
 
@@ -22,7 +20,8 @@ import {IPlaylist} from "../reducers/playlistReducer";
     changeDetection: ChangeDetectionStrategy.OnPush,
     directives: [AudioItem]
 })
-export class AudioList {
-    @Input() audioList: IPlaylist[];
-    @Output() playAudio = new EventEmitter<IAudiodata>();
+export class AudioList  {
+    @Input() audioList: IAudiodata[];
+    @Input() audioBuffer:any;
+    @Output() fetchAudio = new EventEmitter<IAudiodata>();
 }

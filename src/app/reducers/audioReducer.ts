@@ -12,15 +12,24 @@ export interface IAudiodata {
     downloadComplete:boolean;
 }
 
-export const audiobytes: Reducer<{}> = (state: any = {}, action: Action) => {
+const initalAudioData: IAudiodata = {
+            artist:null,
+            artistAudioBuffer:null,
+            downloadComplete:false
+     }
+
+export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioData, action: Action) => {
     switch (action.type) {
         case RECEIVED_AUDIODATA:
-             console.log("audiobytes - action -", action);
-             console.log("audiobytes - state -", state);
+             console.log("audioItem - action -", action);
+             console.log("audioItem - state -", state);
             return Object.assign({},
                 state,
-                Object.assign({}, action.payload, {downloadComplete:true})
+                action.payload
                 );
+        case ADD_TO_PLAYLIST:
+             return state;
+
 
         default:
             return state;

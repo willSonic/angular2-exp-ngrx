@@ -15,7 +15,7 @@ export default {
                 if (req.readyState == 4 && req.status == 200) {
                     var audioData= { "audiobuffer":req.response};
                     observer.next(audioData);
-                    console.log("audioData", audioData);
+                    //console.log("audioData", audioData);
                     observer.complete();
                 }
             };

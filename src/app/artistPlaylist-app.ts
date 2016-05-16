@@ -3,10 +3,12 @@ import {ArtistList} from "./components/artist-list";
 import {AudioList} from "./components/audio-list";
 import {getArtists} from "./actions/artistsAction";
 import {addArtistToPlaylist} from "./actions/playlistAction";
-import {fetchAudio, playArtistTrack} from "./actions/audioAction";
+import {fetchAudio} from "./actions/audioAction";
+import {audioSelector} from "./selectors/audio.selector";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
 import {playlistArraySelector, attachAudioData} from "./selectors/playlist.selector";
 import {IArtist} from "./reducers/artistsReducer";
+import {IAudiodata} from "./reducers/audioReducer";
 import {AsyncPipe} from "@angular/common";
 import {Observable, Subject } from 'rxjs';
 import {Store, Action} from "@ngrx/store";
@@ -32,7 +34,8 @@ import {Store, Action} from "@ngrx/store";
 		      <div class=" pure-u-1-3 custom-restricted-width">
                     <audio-list
                         [audioList]="(audioList | async)"
-                        (playArtistTrack)="actions$.next(playArtistInPlayList($event))">
+                        [audioBuffer]="(audioBuffer  | async)"
+                        (fetchAudio)="actions$.next(playArtistAction($event))">
                     </audio-list>
               </div>
 		    </div>
@@ -45,19 +48,22 @@ import {Store, Action} from "@ngrx/store";
 })
 export class ArtistPlaylistApp {
 
+
     artistList: any;
     audioList: any;
-    audioItem:any;
+    audioBuffer:any;
+
 
 
     actions$ = new Subject<Action>();
 
     addToPlaylistAction  = addArtistToPlaylist;
-    playArtistInPlayList = playArtistTrack;
+    playArtistAction = fetchAudio;
 
     constructor(public store: Store<any>) {
-        this.artistList = store.let(artistAsArraySelector);
-        this.audioList = store.let(attachAudioData);
+        this.audioBuffer  = store.let(audioSelector);
+        this.artistList   = store.let(artistAsArraySelector);
+        this.audioList    = store.let(playlistArraySelector);
 
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());

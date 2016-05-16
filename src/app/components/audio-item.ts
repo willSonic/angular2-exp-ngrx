@@ -2,15 +2,17 @@ import {Component, ChangeDetectionStrategy, Output, OnChanges, SimpleChange, Inp
 import{ NgClass} from "@angular/common";
 import {IAudiodata} from "../reducers/audioReducer";
 import {IArtist} from "../reducers/artistsReducer";
-
+import { Subject, Observable } from 'rxjs';
+import {Store, Action} from "@ngrx/store";
+import {audioSelector} from "../selectors/audio.selector";
 
 @Component({
     selector: 'audio-item',
     directives: [NgClass],
     template: `
     <li class="margin-t-20">
-        <button class="pure-button pure-button-primary"
-            (click)="playAudio.emit(audioItem)">{{audioItem.trackTitle}}
+        <button class="pure-button pure-button-primary" [ngClass]="{active: isLoaded}"
+            (click)="fetchAudio.emit(audioItem)">{{audioItem.artist.trackTitle}}
         </button>
     </li>
     `,
@@ -23,9 +25,12 @@ import {IArtist} from "../reducers/artistsReducer";
 })
 export class AudioItem implements OnChanges {
     @Input()  audioItem: any;
-    @Output() playAudio: EventEmitter<IArtist> = new EventEmitter<IArtist>();
-
-    ngOnChanges(changes: {[ propName: string]: SimpleChange}) {
-		console.log('Change detected:', changes['audioItem'].currentValue);
+    @Output() fetchAudio: EventEmitter<IAudiodata> = new EventEmitter<IAudiodata>();
+    @Input() audioBuffer:any;
+    isLoaded = false;
+    ngOnChanges(changes:any) {
+		console.log('AudioItem Change detected:',changes);
+		console.log('AudioItem this.audioItem.artistAudioBuffer:',this.audioItem.downloadComplete);
+        this.isLoaded = this.audioItem.downloadComplete? true:false;
 	}
 }

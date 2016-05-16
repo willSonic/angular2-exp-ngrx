@@ -24,9 +24,9 @@ const artistFetch = createSaga( function(){
 
 
 const fetchAudio = createSaga( function(){
-
+     console.log('fetchAudio SAGA  callled');
     return iteration$ => iteration$
-        .filter(whenAction(ADD_ARTIST_TO_PLAYLIST))
+        .filter(whenAction(REQUEST_AUDIODATA))
         /*
 
         .map((iteration) => {
@@ -35,18 +35,15 @@ const fetchAudio = createSaga( function(){
         })
          */
         .mergeMap((iteration) => {
-                 return  AudioAPI.default.getTrack(iteration.action.payload.trackURL)
+                 return  AudioAPI.default.getTrack(iteration.action.payload.artist.trackURL)
                         .map((res) => {
-                                console.log('fetchAudio SAGA  === res ', res);
-                                 var audioDataObj = new Object()
-                                 Object.assign(audioDataObj,
-                                               {artist : iteration.action.payload},
-                                               {artistAudioBuffer:res});
-
-                                console.log('fetchAudio SAGA  === audioDataObj ', audioDataObj);
+                                 console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
                                  return {
                                     type: RECEIVED_AUDIODATA,
-                                    payload: audioDataObj
+                                    payload:  Object.assign(iteration.action.payload,
+                                               {artist : iteration.action.payload.artist},
+                                               {artistAudioBuffer:res},
+                                               {downloadComplete:true})
                                 };
                         })
 
