@@ -10,12 +10,16 @@ export interface IAudiodata {
     artist:IArtist;
     artistAudioBuffer: ArrayBuffer;
     downloadComplete:boolean;
+    isPlaying:boolean;
+    currentPosition:number;
 }
 
 const initalAudioData: IAudiodata = {
             artist:null,
             artistAudioBuffer:null,
-            downloadComplete:false
+            downloadComplete:false,
+            isPlaying:false,
+            currentPosition:0
      }
 
 export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioData, action: Action) => {

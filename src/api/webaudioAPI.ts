@@ -14,38 +14,43 @@ export class WebAudioPlayerAPI{
 
     constructor() {
         this.audioContext = new AudioContext();
+        console.log("WebAudioPlayerAPI]  ----- this.audioContext CREATED");
     }
 
 
-    loadAudio(audioItem:any): Observable<any> {
+
+    loadAudio(audioItem:any): Observable<any[]>  {
         var ref = this;
-        console.log("loadAudio  -----  =", audioItem);
-        this.audioContext.decodeAudioData( audioItem.artistAudioBuffer, function(buffer){
-        ref.audioBuffer = buffer;
-        console.log("this.gain ="+ref.gain)
-        console.log("this.audioBuffer.length ="+ref.audioBuffer.length);
-        console.log("this.audioBuffer.duration ="+ref.audioBuffer.duration);
-        })
-        return Observable.create(function (observer) {
-                        observer.onNext(ref.audioBuffer);
-                        observer.onCompleted();
-                });
+        console.log("[WebAudioPlayerAPI] loadAudio  -----  =", audioItem.artistAudioBuffer.audioBuffer);
+
+        return Observable.create(observer=> {
+            this.audioContext.decodeAudioData( audioItem.artistAudioBuffer.audioBuffer, function(buffer){
+              ref.audioBuffer = buffer;
+              console.log("this.gain ="+ref.gain);
+              console.log("this.audioBuffer.length ="+ref.audioBuffer.length);
+              console.log("this.audioBuffer.duration ="+ref.audioBuffer.duration);
+              observer.next(ref.audioBuffer);
+              observer.complete();
+            });
+
+         });
     }
 
-    playBuffer(): void {
-        let bufferSource = this.audioContext.createBufferSource();
-        console.log("this.audioBuffer.length ="+this.audioBuffer.length);
-        console.log("this.audioBuffer.duration ="+this.audioBuffer.duration);
-        bufferSource.buffer = this.audioBuffer;
-        bufferSource.playbackRate.value = this.playbackRate;
-
-        let gainNode = this.audioContext.createGain();
-        gainNode.gain.value = this.gain;
-
-        bufferSource.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
-
-        bufferSource.start(0);
+    playBuffer(): Array<any> {
+            let bufferSource = this.audioContext.createBufferSource();
+            console.log("this.audioBuffer.length ="+this.audioBuffer.length);
+            console.log("this.audioBuffer.duration ="+this.audioBuffer.duration);
+            bufferSource.buffer = this.audioBuffer;
+            bufferSource.playbackRate.value = this.playbackRate;
+    
+            let gainNode = this.audioContext.createGain();
+            gainNode.gain.value = this.gain;
+    
+            bufferSource.connect(gainNode);
+            gainNode.connect(this.audioContext.destination);
+    
+            bufferSource.start(0);
+            return [ {'playStart':true}];
     }
 }
 

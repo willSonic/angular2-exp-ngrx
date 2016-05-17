@@ -13,7 +13,7 @@ export default {
             req.responseType = "arraybuffer";
             req.onreadystatechange = function () {
                 if (req.readyState == 4 && req.status == 200) {
-                    var audioData= { "audiobuffer":req.response};
+                    var audioData= { "audioBuffer":req.response};
                     observer.next(audioData);
                     //console.log("audioData", audioData);
                     observer.complete();
