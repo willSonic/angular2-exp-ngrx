@@ -12,7 +12,7 @@ import {IArtist} from "./reducers/artistsReducer";
 import {audioItem} from "./reducers/audioReducer";
 import {AsyncPipe} from "@angular/common";
 import {Observable, Subject } from 'rxjs';
-import {Store, Action} from "@ngrx/store";
+import {Store, Action, Dispatcher} from "@ngrx/store";
 
 @Component({
     selector: `artist-playlist-app`,
@@ -71,10 +71,12 @@ export class ArtistPlaylistApp {
 
         this.audioBuffer.subscribe(function(){
               var audioItemState  = store.getState();
-              if(audioItemState.audioItem.artistAudioBuffer.length>0){
-                  var audioItemState  = store.getState();
+              console.log("[ArtistPlaylistApp] OUTSIDE audioBuffer audioItemState =", audioItemState);
+              if(audioItemState.audioItem && audioItemState.audioItem.artistAudioBuffer){
                 //  store.dispatch(playAudioItem())
-                  console.log("ArtistPlaylistApp audioBuffer audioItemState =", audioItemState);
+                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer audioItemState =", audioItemState);
+                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer rtistAudioBuffer.byteLength ="+audioItemState.audioItem.artistAudioBuffer.byteLength);
+                  store.dispatch(playAudioItem(audioItemState.audioItem))
               }
         });
     }

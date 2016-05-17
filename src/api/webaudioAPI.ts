@@ -17,8 +17,9 @@ export class WebAudioPlayerAPI{
     }
 
 
-    loadAudio(audioItem:IAudiodata): Observable<any> {
+    loadAudio(audioItem:any): Observable<any> {
         var ref = this;
+        console.log("loadAudio  -----  =", audioItem);
         this.audioContext.decodeAudioData( audioItem.artistAudioBuffer, function(buffer){
         ref.audioBuffer = buffer;
         console.log("this.gain ="+ref.gain)

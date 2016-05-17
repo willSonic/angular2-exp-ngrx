@@ -35,7 +35,7 @@ export const audioPlayer: Reducer<IAudioPlayer> = (state: IAudioPlayer = initial
         case VOLUME:
                 return state;
         default:
-           // console.log("playlistReducer -- defaults  state = ", state);
+            console.log("playlistReducer -- defaults  state = ", state);
             return state;
     }
 };
