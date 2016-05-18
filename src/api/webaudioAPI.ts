@@ -2,7 +2,6 @@ import {Injectable, bind} from '@angular/core';
 import {Subject, BehaviorSubject, Observable} from 'rxjs';
 import {audioItem, IAudiodata} from "../app/reducers/audioReducer";
 
-
 @Injectable()
 export class WebAudioPlayerAPI{
 

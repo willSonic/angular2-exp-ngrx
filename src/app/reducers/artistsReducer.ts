@@ -1,10 +1,8 @@
 import {Reducer, Action} from "@ngrx/store";
 
-export const ADD_TO_PLAYLIST  = 'ADD_TO_PLAYLIST';
 export const REQUEST_ARTISTS  = 'REQUEST_ARTISTS';
 export const RECEIVED_ARTISTS = 'RECEIVED_ARTISTS';
 export const RECEIVED_ERROR   = 'RECEIVED_ERROR';
-export const DOWNLOAD_AUDIO   = 'DOWNLOAD_AUDIO';
 
 
 export interface IArtist {
@@ -27,13 +25,6 @@ export const artists: Reducer<{}> = (state: any = {}, action: Action) => {
                     return obj;
                 }, {})
             );
-        case ADD_TO_PLAYLIST:
-            return Object.assign({}, 
-                 state, {
-                [action.payload]: Object.assign({}, state[action.payload], {
-                    inventory: state[action.payload].inventory - 1
-                })
-            });
         default:
             return state;
     }
