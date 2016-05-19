@@ -1,13 +1,16 @@
 import {Reducer, Action} from "@ngrx/store";
+import {uuid} from "../../util/uuid"
 import {IArtist} from "./artistsReducer";
 
 export const ADD_TO_PLAYLIST= 'ADD_TO_PLAYLIST';
+export const CREATE_AUDIODATA= 'CREATE_AUDIODATA'
 export const REQUEST_AUDIODATA = 'REQUEST_AUDIODATA';
 export const RECEIVED_AUDIODATA = 'RECEIVED_AUDIODATA';
 
 
 export interface IAudiodata {
-    artist:IArtist;
+    id:string;
+    artistId:number;
     artistAudioBuffer: ArrayBuffer;
     downloadComplete:boolean;
     isPlaying:boolean;
@@ -15,7 +18,8 @@ export interface IAudiodata {
 }
 
 const initalAudioData: IAudiodata = {
-            artist:null,
+            id:undefined,
+            artistId:null,
             artistAudioBuffer:null,
             downloadComplete:false,
             isPlaying:false,
@@ -24,6 +28,19 @@ const initalAudioData: IAudiodata = {
 
 export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioData, action: Action) => {
     switch (action.type) {
+        case CREATE_AUDIODATA:
+             return Object.assign({}, 
+                                  state, 
+                                     {
+                                         id:uuid(),
+                                         artistId:action.payload.id,
+                                         artistAudioBuffer:null,
+                                         downloadComplete:false,
+                                         isPlaying:false,
+                                         currentPosition:0
+
+                                     })
+
         case RECEIVED_AUDIODATA:
              console.log("audioItem - action -", action);
              console.log("audioItem - state -", state);
