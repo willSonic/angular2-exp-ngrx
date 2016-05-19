@@ -29,17 +29,16 @@ const initalAudioData: IAudiodata = {
 export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioData, action: Action) => {
     switch (action.type) {
         case CREATE_AUDIODATA:
-             return Object.assign({}, 
-                                  state, 
-                                     {
+             return Object.assign({},
+                                  state,
+                                  action.payload = Object.assign({},{
                                          id:uuid(),
                                          artistId:action.payload.id,
                                          artistAudioBuffer:null,
                                          downloadComplete:false,
                                          isPlaying:false,
                                          currentPosition:0
-
-                                     })
+                                     }));
 
         case RECEIVED_AUDIODATA:
              console.log("audioItem - action -", action);

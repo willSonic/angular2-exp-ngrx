@@ -16,7 +16,7 @@ import {IArtist} from "../reducers/artistsReducer";
               </h3>
             </div>
             <div class="pull-left">
-                  <a (click)="addArtistToPlaylist.emit(artistItem)" class="video-thumbnail">
+                  <a (click)="createPlaylistItem.emit(artistItem)" class="video-thumbnail">
                       <img class="media-object avatar video-mask"  src="{{artistItem.albumImgSrc}}">
                       
                       <div class="play-icon"></div>
@@ -28,5 +28,5 @@ import {IArtist} from "../reducers/artistsReducer";
 })
 export class ArtistItem {
     @Input()  artistItem: IArtist;
-    @Output() addArtistToPlaylist: EventEmitter<IArtist> = new EventEmitter<IArtist>();
+    @Output() createPlaylistItem: EventEmitter<IArtist> = new EventEmitter<IArtist>();
 }

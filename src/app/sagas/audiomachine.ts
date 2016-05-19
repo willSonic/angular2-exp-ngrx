@@ -1,6 +1,6 @@
 import {Http} from '@angular/http';
 import {createSaga, Saga, whenAction, toPayload} from 'store-saga';
-import {REQUEST_ARTISTS, RECEIVED_ARTISTS, RECEIVED_ERROR} from '../reducers/artistsReducer';
+import {REQUEST_ARTISTS, RECEIVED_ARTISTS, RECEIVED_ERROR, IArtist} from '../reducers/artistsReducer';
 import {REQUEST_AUDIODATA, RECEIVED_AUDIODATA,CREATE_AUDIODATA}from '../reducers/audioReducer';
 import {ADD_ARTIST_TO_PLAYLIST, ADD_AUDIOITEM_TO_PLAYLIST} from '../reducers/playlistReducer';
 import {IAudiodata} from '../reducers/audioReducer';
@@ -25,26 +25,35 @@ const artistFetch = createSaga( function(){
 });
 
 
-const fetchAudio = createSaga( function(){
-    return iteration$ => iteration$
-        .filter(whenAction(CREATE_AUDIODATA))
+const createPlaylistItem = createSaga( function sagaFactory() {
+        return function someService(iteration$: Observable<any>) {
+    return iteration$ .filter(whenAction(CREATE_AUDIODATA))
         .mergeMap((iteration) => {
-             let currentAudioItem = iteration.audioItem;
-            return  DataLoadAPI.default.getTrack(iteration.action.payload.artist.trackURL)
-                .map((res) => {
-                    console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
-                    return {
-                        type: ADD_AUDIOITEM_TO_PLAYLIST,
-                        payload:  Object.assign(currentAudioItem,
-                                                {artist : iteration.action.payload},
-                                                {artistAudioBuffer:res.audioBuffer})
-                    };
-                })
+            if(iteration.state.audioItem){
+                 iteration.state.audioItem;
+                 var trackURL = Object.keys(iteration.state.artists)
+                                        .filter( x =>  {
+                                               return iteration.state.artists[x].id  ===  iteration.state.audioItem.artistId})
+                                          .map(x => {return iteration.state.artists[x]})[0].trackURL;
 
+                return  DataLoadAPI.default.getTrack(trackURL)
+                    .map((res) => {
+                        console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
+                        iteration.action.payload.artistAudioBuffer = res;
+                        return {
+                            type: ADD_AUDIOITEM_TO_PLAYLIST,
+                            payload:  iteration.action.payload
+                        };
+                    })
+            }else{
+               return iteration.state;
+
+            }
         });
+        }
 });
 
-/*
+
 
 const fetchAudio = createSaga( function(){
     return iteration$ => iteration$
@@ -65,7 +74,7 @@ const fetchAudio = createSaga( function(){
         });
 });
 
-*/
+
 const loadAudioItem = createSaga(
     function sagaFactory(webAudioPlayer: WebAudioPlayerAPI) {
         return function playerServices(iteration$: Observable<any>) {
@@ -107,6 +116,7 @@ const playAudioItem = createSaga(
 
 export default [
     artistFetch,
+    createPlaylistItem,
     fetchAudio,
     loadAudioItem,
     playAudioItem

@@ -12,15 +12,15 @@ const initialState: IPlaylist = { audioList:[] }
 export const playlist: Reducer<IPlaylist> = (state: IPlaylist = initialState, action: Action) => {
     switch (action.type) {
         case ADD_ARTIST_TO_PLAYLIST:
-            let t = state;
+            let z = state;
             if(state.audioList.indexOf(action.payload)  < 0){
-                t = Object.assign({},
+                z = Object.assign({},
                     state,
                     {audioList:[ ...state.audioList, Object.assign({}, {artist:action.payload,
                                                                                artistAudioBuffer:[],
                                                                                downloadComplete:false})]});
              }
-            return t;
+            return z;
         
         case ADD_AUDIOITEM_TO_PLAYLIST:
             let t = state;

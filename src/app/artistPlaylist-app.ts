@@ -4,10 +4,10 @@ import {AudioList} from "./components/audio-list";
 import {getArtists} from "./actions/artistsAction";
 import {playAudioItem} from "./actions/audioplayerAction";
 import {addArtistToPlaylist} from "./actions/playlistAction";
-import {fetchAudio} from "./actions/audiodataAction";
+import {fetchAudio, createPlaylistItem} from "./actions/audiodataAction";
 import {audioSelector} from "./selectors/audio.selector";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
-import {playlistArraySelector, attachAudioData} from "./selectors/playlist.selector";
+import {playlistArraySelector, constructedPlaylistItem} from "./selectors/playlist.selector";
 import {IArtist} from "./reducers/artistsReducer";
 import {audioItem} from "./reducers/audioReducer";
 import {AsyncPipe} from "@angular/common";
@@ -29,7 +29,7 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 		      <div class="pure-u-1-3">
                     <artist-list
                         [artistList]="(artistList | async)"
-                        (addArtistToPlaylist)="actions$.next(addToPlaylistAction($event))">
+                        (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))">
                     </artist-list>
               </div>
 		      <div class=" pure-u-1-3 custom-restricted-width">
@@ -58,18 +58,19 @@ export class ArtistPlaylistApp {
 
     actions$ = new Subject<Action>();
 
+    addArtistToPlaylistAction  = createPlaylistItem;
     addToPlaylistAction  = addArtistToPlaylist;
     playArtistAction = fetchAudio;
 
     constructor(public store: Store<any>) {
         this.audioBuffer  = store.let(audioSelector);
         this.artistList   = store.let(artistAsArraySelector);
-        this.audioList    = store.let(playlistArraySelector);
+        this.audioList    = store.let(constructedPlaylistItem);
 
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
-        this.audioBuffer.subscribe(function(){
+       /* this.audioBuffer.subscribe(function(){
               var audioItemState  = store.getState();
               console.log("[ArtistPlaylistApp] OUTSIDE audioBuffer audioItemState =", audioItemState);
               if(audioItemState.audioItem && audioItemState.audioItem.artistAudioBuffer){
@@ -78,7 +79,7 @@ export class ArtistPlaylistApp {
                   console.log("[ArtistPlaylistApp] INSIDE  audioBuffer rtistAudioBuffer.byteLength ="+audioItemState.audioItem.artistAudioBuffer.byteLength);
                   store.dispatch(playAudioItem(audioItemState.audioItem))
               }
-        });
+        });*/
     }
 
     ngOnDestroy() {

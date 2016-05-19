@@ -1,5 +1,5 @@
 import {Action} from "@ngrx/store";
-import {ADD_TO_PLAYLIST, REQUEST_AUDIODATA, IAudiodata} from "../reducers/audioReducer";
+import {CREATE_AUDIODATA,ADD_TO_PLAYLIST, REQUEST_AUDIODATA, IAudiodata} from "../reducers/audioReducer";
 import {IArtist} from "../reducers/artistsReducer";
 
 
@@ -8,6 +8,7 @@ export const fetchAudio = (audiodataItem: IAudiodata) => {
     return <Action>{ type: REQUEST_AUDIODATA, payload: audiodataItem  };
 }
 
-export const playArtistTrack = (artist: IArtist) => {
-    return <Action>{ type: REQUEST_AUDIODATA, payload: artist };
+export const createPlaylistItem = (artist: IArtist) => {
+     console.log(" audiodataAction -- createPlaylistItem =", artist);
+    return <Action>{ type: CREATE_AUDIODATA, payload: artist };
 }

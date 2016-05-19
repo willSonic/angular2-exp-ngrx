@@ -10,6 +10,7 @@ export const addArtistToPlaylist = (artist: IArtist) => {
 }
 
 
-export const addArtistToPlaylist = (artist: IArtist) => {
+export const addAudioItemToPlaylist = (artist: IArtist) => {
     console.log(" playlistAction -- artist =", artist);
     return <Action>{ type:ADD_AUDIOITEM_TO_PLAYLIST, payload: artist };
+}

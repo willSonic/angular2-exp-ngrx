@@ -11,7 +11,7 @@ import {IPlaylist} from "../reducers/playlistReducer";
         <h1 class="brand-label">Artist</h1>
         <ul *ngIf="artistList" class="pure-menu-list">
             <artist-item
-                (addArtistToPlaylist)="addArtistToPlaylist.emit($event)"
+                (createPlaylistItem)="createPlaylistItem.emit($event)"
                 *ngFor="let artistItem of artistList"
                 [artistItem]="artistItem"
                 >
@@ -23,5 +23,5 @@ import {IPlaylist} from "../reducers/playlistReducer";
 })
 export class ArtistList {
     @Input() artistList: IArtist[];
-    @Output() addArtistToPlaylist = new EventEmitter<IArtist>();
+    @Output() createPlaylistItem = new EventEmitter<IArtist>();
 }
