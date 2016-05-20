@@ -4,3 +4,7 @@ import { REQUEST_ARTISTS, IArtist} from "../reducers/artistsReducer";
 export const getArtists = () => {
     return <Action>{ type: REQUEST_ARTISTS };
 }
+
+export const currentArtist = () => {
+    return <Action>{ type: REQUEST_ARTISTS };
+}
