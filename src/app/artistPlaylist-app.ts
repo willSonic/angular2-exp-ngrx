@@ -29,7 +29,7 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 		      <div class="pure-u-1-3">
                     <artist-list
                         [artistList]="(artistList | async)"
-                        (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))">
+                        (createPlaylistItem)="addToPlaylistRequest($event)">
                     </artist-list>
               </div>
 		      <div class=" pure-u-1-3 custom-restricted-width">
@@ -55,9 +55,11 @@ export class ArtistPlaylistApp {
     audioBuffer:any;
 
 
+    artists: Observable<any>;
+
 
     actions$ = new Subject<Action>();
-
+    // template -- needs   (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))"
     addArtistToPlaylistAction  = createPlaylistItem;
     addToPlaylistAction  = addArtistToPlaylist;
     playArtistAction = fetchAudio;
@@ -70,6 +72,7 @@ export class ArtistPlaylistApp {
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
+
        /* this.audioBuffer.subscribe(function(){
               var audioItemState  = store.getState();
               console.log("[ArtistPlaylistApp] OUTSIDE audioBuffer audioItemState =", audioItemState);
@@ -80,6 +83,14 @@ export class ArtistPlaylistApp {
                   store.dispatch(playAudioItem(audioItemState.audioItem))
               }
         });*/
+    }
+
+    addToPlaylistRequest(event:any):void{
+              console.log("[ArtistPlaylistApp] addToPlaylistRequest =", event);
+                //this.store.select(state => state.artists)
+                var artists:IArtist = this.store.getState().artists;
+                console.log("[ArtistPlaylistApp] this.store.select('playlist')=",  Object.keys(artists).filter(x  => {return artists[x] }).map( x => artists[x].trackURL) );
+                 this.store.dispatch(createPlaylistItem(event))
     }
 
     ngOnDestroy() {
