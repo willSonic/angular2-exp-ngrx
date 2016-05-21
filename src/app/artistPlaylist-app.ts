@@ -55,7 +55,8 @@ export class ArtistPlaylistApp {
     audioBuffer:any;
 
 
-    artists: Observable<any>;
+    public  artists;
+    private subscription;
 
 
     actions$ = new Subject<Action>();
@@ -68,7 +69,7 @@ export class ArtistPlaylistApp {
         this.audioBuffer  = store.let(audioSelector);
         this.artistList   = store.let(artistAsArraySelector);
         this.audioList    = store.let(constructedPlaylistItem);
-
+        this.subscription   = store.select('artists').subscribe( artists =>  {this.artists = artists});
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
@@ -87,7 +88,8 @@ export class ArtistPlaylistApp {
 
     addToPlaylistRequest(event:any):void{
               console.log("[ArtistPlaylistApp] addToPlaylistRequest =", event);
-                //this.store.select(state => state.artists)
+                console.log("[ArtistPlaylistApp] tsubscription = ",   this.artists);
+                console.log("[ArtistPlaylistApp] this.store.value.artists' =", this.store.value.artists)
                 var artists:IArtist = this.store.getState().artists;
                 console.log("[ArtistPlaylistApp] this.store.select('playlist')=",  Object.keys(artists).filter(x  => {return artists[x] }).map( x => artists[x].trackURL) );
                  this.store.dispatch(createPlaylistItem(event))
