@@ -9,14 +9,14 @@ export const VOLUME = 'VOLUME';
 
 export interface IAudioPlayer {
                   elapsedTime:number,
-                  audioItem:IAudiodata,
+                  audioId:string,
                   isPlaying:boolean,
                   volume:number
                  }
 
 const initialState: IAudioPlayer = {
                   elapsedTime:0,
-                  audioItem:null,
+                  audioId:undefined,
                   isPlaying:false,
                   volume:0.8
                  }

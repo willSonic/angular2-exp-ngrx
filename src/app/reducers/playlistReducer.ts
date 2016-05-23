@@ -24,11 +24,14 @@ export const playlist: Reducer<IPlaylist> = (state: IPlaylist = initialState, ac
         
         case ADD_AUDIOITEM_TO_PLAYLIST:
             let t = state;
+                console.log("playlistReducer   =--ADD_AUDIOITEM_TO_PLAYLIST-- state,",state);
             if(state.audioList.indexOf(action.payload)  < 0){
+                console.log("playlistReducer   =--ADD_AUDIOITEM_TO_PLAYLIST--action.payload,",action.payload)
                 t = Object.assign({},
                     state,
-                    {audioList:[ ...state.audioList, action.payload]});
+                    {audioList:[ ...state.audioList, Object.assign({},action.payload)]});
             }
+                console.log("playlistReducer   =--ADD_AUDIOITEM_TO_PLAYLIST--t,",t)
             return t;
 
         default:

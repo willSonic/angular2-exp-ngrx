@@ -25,12 +25,11 @@ const artistFetch = createSaga( function(){
 });
 
 
-const createPlaylistItem = createSaga( function sagaFactory() {
+const createPlayListItem = createSaga( function sagaFactory() {
         return function someService(iteration$: Observable<any>) {
     return iteration$ .filter(whenAction(CREATE_AUDIODATA))
         .mergeMap((iteration) => {
             if(iteration.state.audioItem){
-                 iteration.state.audioItem;
                  var trackURL = Object.keys(iteration.state.artists)
                                         .filter( x =>  {
                                                return iteration.state.artists[x].id  ===  iteration.state.audioItem.artistId})
@@ -38,11 +37,12 @@ const createPlaylistItem = createSaga( function sagaFactory() {
 
                 return  DataLoadAPI.default.getTrack(trackURL)
                     .map((res) => {
-                        console.log("fetchAudio SAGA res.audiodata audiobuffer.", res);
-                        iteration.action.payload.artistAudioBuffer = res;
+                        console.log("createPlayListItem SAGA riteration.state.audioItem =", iteration.state.audioItem);
+                        console.log("createPlayListItem SAGA res.audiodata audiobuffer =", res);
+                        iteration.state.audioItem.artistAudioBuffer = res;
                         return {
                             type: ADD_AUDIOITEM_TO_PLAYLIST,
-                            payload:  iteration.action.payload
+                            payload:  iteration.state.audioItem
                         };
                     })
             }else{
@@ -116,7 +116,7 @@ const playAudioItem = createSaga(
 
 export default [
     artistFetch,
-    createPlaylistItem,
+    createPlayListItem,
     fetchAudio,
     loadAudioItem,
     playAudioItem

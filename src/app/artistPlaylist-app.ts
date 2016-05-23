@@ -4,7 +4,7 @@ import {AudioList} from "./components/audio-list";
 import {getArtists} from "./actions/artistsAction";
 import {playAudioItem} from "./actions/audioplayerAction";
 import {addArtistToPlaylist} from "./actions/playlistAction";
-import {fetchAudio, createPlaylistItem} from "./actions/audiodataAction";
+import {AudioServiceAction} from "./actions/audioServiceAction";
 import {audioSelector} from "./selectors/audio.selector";
 import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
 import {playlistArraySelector, constructedPlaylistItem} from "./selectors/playlist.selector";
@@ -29,14 +29,15 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 		      <div class="pure-u-1-3">
                     <artist-list
                         [artistList]="(artistList | async)"
-                        (createPlaylistItem)="addToPlaylistRequest($event)">
+                        (createPlaylistItem)="audioServiceActions.createPlaylistItem($event)" 
+                        >
                     </artist-list>
               </div>
 		      <div class=" pure-u-1-3 custom-restricted-width">
                     <audio-list
                         [audioList]="(audioList | async)"
-                        [audioBuffer]="(audioBuffer  | async)"
-                        (fetchAudio)="actions$.next(playArtistAction($event))">
+                        (playAudioItem)="actions$.next(playArtistAction($event))"
+                        >
                     </audio-list>
               </div>
 		    </div>
@@ -52,24 +53,22 @@ export class ArtistPlaylistApp {
 
     artistList: any;
     audioList: any;
-    audioBuffer:any;
 
 
-    public  artists;
+   // public  artists;
     private subscription;
 
 
     actions$ = new Subject<Action>();
+   // template -- needs (createPlaylistItem)="addToPlaylistRequest($event)">
     // template -- needs   (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))"
-    addArtistToPlaylistAction  = createPlaylistItem;
-    addToPlaylistAction  = addArtistToPlaylist;
-    playArtistAction = fetchAudio;
+   // addArtistToPlaylistAction  = this.audioServiceAction.createPlaylistItem;
+    playArtistAction = playAudioItem;
 
-    constructor(public store: Store<any>) {
-        this.audioBuffer  = store.let(audioSelector);
+    constructor(public store: Store<any>,  private audioServiceActions:AudioServiceAction) {
         this.artistList   = store.let(artistAsArraySelector);
         this.audioList    = store.let(constructedPlaylistItem);
-        this.subscription   = store.select('artists').subscribe( artists =>  {this.artists = artists});
+      //  this.subscription   = store.select('artists').subscribe( artists =>  {this.artists = artists});
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
@@ -86,14 +85,14 @@ export class ArtistPlaylistApp {
         });*/
     }
 
-    addToPlaylistRequest(event:any):void{
+   /* addToPlaylistRequest(event:any):void{
               console.log("[ArtistPlaylistApp] addToPlaylistRequest =", event);
                 console.log("[ArtistPlaylistApp] tsubscription = ",   this.artists);
                 console.log("[ArtistPlaylistApp] this.store.value.artists' =", this.store.value.artists)
                 var artists:IArtist = this.store.getState().artists;
                 console.log("[ArtistPlaylistApp] this.store.select('playlist')=",  Object.keys(artists).filter(x  => {return artists[x] }).map( x => artists[x].trackURL) );
-                 this.store.dispatch(createPlaylistItem(event))
-    }
+                 this.store.dispatch(audioServiceAction.createPlaylistItem(event))
+    }*/
 
     ngOnDestroy() {
         this.store.unsubscribe();

@@ -11,17 +11,15 @@ import {IAudiodata} from "../reducers/audioReducer";
             <audio-item
                 *ngFor="let audioItem of audioList"
                 [audioItem]="audioItem"
-                [audioBuffer]="audioItem.artistAudioBuffer"
-                (fetchAudio)="fetchAudio.emit($event)">
+                (playAudioItem)="playAudioItem.emit($event)">
             </audio-item>
         </ul>
 
     `,
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection:ChangeDetectionStrategy.OnPush,
     directives: [AudioItem]
 })
 export class AudioList  {
     @Input() audioList: IAudiodata[];
-    @Input() audioBuffer:any;
-    @Output() fetchAudio = new EventEmitter<IAudiodata>();
+    @Output() playAudioItem = new EventEmitter<IAudiodata>();
 }

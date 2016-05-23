@@ -48,9 +48,9 @@ export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioDa
                 state,
                 action.payload
                 );
+                
         case ADD_TO_PLAYLIST:
              return state;
-
 
         default:
             return state;
