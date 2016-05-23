@@ -2,43 +2,41 @@ import {Injectable} from "@angular/core";
 import {Store, Action} from "@ngrx/store";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
-import {CREATE_AUDIODATA,ADD_TO_PLAYLIST, REQUEST_AUDIODATA, IAudiodata} from "../reducers/audioReducer";
+import {playlist} from "../reducers/playlistReducer";
+import {CREATE_AUDIODATA, REQUEST_AUDIODATA, IAudiodata} from "../reducers/audioReducer";
 import {IArtist} from "../reducers/artistsReducer";
 
 
 @Injectable()
 export class AudioServiceAction {
 
-    private sactions$: Subject<Action> = new Subject<Action>();
-
+    private actions$: Subject<Action> = new Subject<Action>();
+    private playlist:any;
+    private storeSubscription;
     constructor(  private _store : Store<any>){
 
-            const fetchAudio = this.sactions$
-            .filter((action : Action) => action.type === REQUEST_AUDIODATA);
+            this.storeSubscription  = _store.select('playlist')
+                                            .subscribe( (playlist) =>  { this.playlist = playlist });
 
-            const createPlaylistItem =this.sactions$
-            .filter((action : Action) => action.type === CREATE_AUDIODATA);
+            const createPlaylistItem =  this.actions$
+                                            .filter((action : Action) => action.type === CREATE_AUDIODATA);
 
-
-            Observable
-            /*
-                For more on merge: https://gist.github.com/btroncone/d6cf141d6f2c00dc6b35#merge
-            */
-            .merge(createPlaylistItem, fetchAudio)
-            .subscribe(_store);
-
-
-
-    }
-
-    fetchAudio = (audiodataItem  : IAudiodata) => {
-        this.sactions$.next({type: REQUEST_AUDIODATA, payload: audiodataItem });
+            Observable.from(createPlaylistItem).subscribe(_store);
     }
 
     createPlaylistItem = (artist : IArtist) => {
-        console.log('createPlaylistItem   = ', artist);
-        this.sactions$.next({type: CREATE_AUDIODATA, payload: artist });
+        //console.log('[AudioServiceAction] ----   createPlaylistItem   artist = ', artist);
+       //console.log('[AudioServiceAction] ----   createPlaylistItem   this.playlist.audioList = ', this.playlist.audioList);
+        if(this.shouldAddToPlaylist(artist)){
+            this.actions$.next({type: CREATE_AUDIODATA, payload: artist });
+        }else{
+            this.actions$.next({type: '', payload: {} });
+        }
     }
 
 
+    private shouldAddToPlaylist(artist:IArtist):boolean{
+        var addToPlayList = this.playlist.audioList.find( (item)=> {  return item.artistId === artist.id });
+        return !addToPlayList?true:false;
+    }
 }

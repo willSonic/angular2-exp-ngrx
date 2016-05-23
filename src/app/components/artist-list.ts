@@ -2,7 +2,6 @@ import {Component, ChangeDetectionStrategy, Input, Output, EventEmitter} from "@
 
 import {ArtistItem} from "./artist-item";
 import {IArtist} from "../reducers/artistsReducer";
-import {IPlaylist} from "../reducers/playlistReducer";
 
 
 @Component({

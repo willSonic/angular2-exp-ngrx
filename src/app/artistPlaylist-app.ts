@@ -1,18 +1,14 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {ArtistList} from "./components/artist-list";
-import {AudioList} from "./components/audio-list";
-import {getArtists} from "./actions/artistsAction";
-import {playAudioItem} from "./actions/audioplayerAction";
-import {addArtistToPlaylist} from "./actions/playlistAction";
-import {AudioServiceAction} from "./actions/audioServiceAction";
-import {audioSelector} from "./selectors/audio.selector";
-import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
-import {playlistArraySelector, constructedPlaylistItem} from "./selectors/playlist.selector";
-import {IArtist} from "./reducers/artistsReducer";
-import {audioItem} from "./reducers/audioReducer";
-import {AsyncPipe} from "@angular/common";
-import {Observable, Subject } from 'rxjs';
-import {Store, Action, Dispatcher} from "@ngrx/store";
+import { Component, ChangeDetectionStrategy} from '@angular/core';
+import { ArtistList} from "./components/artist-list";
+import { AudioList} from "./components/audio-list";
+import { getArtists } from "./actions/artistsAction";
+import { playAudioItem } from "./actions/audioplayerAction";
+import { AudioServiceAction } from "./actions/audioServiceAction";
+import { artistAsArraySelector } from "./selectors/artist.selector";
+import { constructedPlaylistItem } from "./selectors/playlist.selector";
+import {AsyncPipe } from "@angular/common";
+import { Subject } from 'rxjs';
+import {Store, Action} from "@ngrx/store";
 
 @Component({
     selector: `artist-playlist-app`,
@@ -50,49 +46,20 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 })
 export class ArtistPlaylistApp {
 
-
     artistList: any;
     audioList: any;
 
-
-   // public  artists;
-    private subscription;
-
-
     actions$ = new Subject<Action>();
-   // template -- needs (createPlaylistItem)="addToPlaylistRequest($event)">
-    // template -- needs   (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))"
-   // addArtistToPlaylistAction  = this.audioServiceAction.createPlaylistItem;
     playArtistAction = playAudioItem;
 
     constructor(public store: Store<any>,  private audioServiceActions:AudioServiceAction) {
         this.artistList   = store.let(artistAsArraySelector);
         this.audioList    = store.let(constructedPlaylistItem);
-      //  this.subscription   = store.select('artists').subscribe( artists =>  {this.artists = artists});
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
-
-       /* this.audioBuffer.subscribe(function(){
-              var audioItemState  = store.getState();
-              console.log("[ArtistPlaylistApp] OUTSIDE audioBuffer audioItemState =", audioItemState);
-              if(audioItemState.audioItem && audioItemState.audioItem.artistAudioBuffer){
-                //  store.dispatch(playAudioItem())
-                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer audioItemState =", audioItemState);
-                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer rtistAudioBuffer.byteLength ="+audioItemState.audioItem.artistAudioBuffer.byteLength);
-                  store.dispatch(playAudioItem(audioItemState.audioItem))
-              }
-        });*/
     }
 
-   /* addToPlaylistRequest(event:any):void{
-              console.log("[ArtistPlaylistApp] addToPlaylistRequest =", event);
-                console.log("[ArtistPlaylistApp] tsubscription = ",   this.artists);
-                console.log("[ArtistPlaylistApp] this.store.value.artists' =", this.store.value.artists)
-                var artists:IArtist = this.store.getState().artists;
-                console.log("[ArtistPlaylistApp] this.store.select('playlist')=",  Object.keys(artists).filter(x  => {return artists[x] }).map( x => artists[x].trackURL) );
-                 this.store.dispatch(audioServiceAction.createPlaylistItem(event))
-    }*/
 
     ngOnDestroy() {
         this.store.unsubscribe();
