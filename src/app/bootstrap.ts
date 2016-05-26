@@ -3,6 +3,7 @@ import {provide} from '@angular/core';
 import {HTTP_PROVIDERS, BrowserXhr} from '@angular/http';
 import {ELEMENT_PROBE_PROVIDERS} from '@angular/platform-browser/index';
 import {ArtistPlaylistApp} from './artistPlaylist-app';
+import {AudioServiceAction} from './actions/audioServiceAction';
 import {provideStore, usePreMiddleware, usePostMiddleware, Middleware} from "@ngrx/store";
 import {APP_REDUCERS} from "./reducers/reducers";
 import {APP_SAGAS} from "./sagas/sagas";
@@ -37,6 +38,7 @@ export function main() {
       apiInjectables,
       ELEMENT_PROBE_PROVIDERS,
       HTTP_PROVIDERS,
+      AudioServiceAction,
       provide(BrowserXhr, { useClass: CustomBrowserXhr }),
       provideStore(APP_REDUCERS),
       usePreMiddleware(actionLog),

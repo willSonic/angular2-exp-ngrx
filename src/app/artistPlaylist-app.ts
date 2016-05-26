@@ -1,18 +1,14 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {ArtistList} from "./components/artist-list";
-import {AudioList} from "./components/audio-list";
-import {getArtists} from "./actions/artistsAction";
-import {playAudioItem} from "./actions/audioplayerAction";
-import {addArtistToPlaylist} from "./actions/playlistAction";
-import {fetchAudio, createPlaylistItem} from "./actions/audiodataAction";
-import {audioSelector} from "./selectors/audio.selector";
-import {artistSelector, artistAsArraySelector} from "./selectors/artist.selector";
-import {playlistArraySelector, constructedPlaylistItem} from "./selectors/playlist.selector";
-import {IArtist} from "./reducers/artistsReducer";
-import {audioItem} from "./reducers/audioReducer";
-import {AsyncPipe} from "@angular/common";
-import {Observable, Subject } from 'rxjs';
-import {Store, Action, Dispatcher} from "@ngrx/store";
+import { Component, ChangeDetectionStrategy} from '@angular/core';
+import { ArtistList} from "./components/artist-list";
+import { AudioList} from "./components/audio-list";
+import { getArtists } from "./actions/artistsAction";
+import { playAudioItem } from "./actions/audioplayerAction";
+import { AudioServiceAction } from "./actions/audioServiceAction";
+import { artistAsArraySelector } from "./selectors/artist.selector";
+import { constructedPlaylistItem } from "./selectors/playlist.selector";
+import {AsyncPipe } from "@angular/common";
+import { Subject } from 'rxjs';
+import {Store, Action} from "@ngrx/store";
 
 @Component({
     selector: `artist-playlist-app`,
@@ -29,14 +25,15 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 		      <div class="pure-u-1-3">
                     <artist-list
                         [artistList]="(artistList | async)"
-                        (createPlaylistItem)="actions$.next(addArtistToPlaylistAction($event))">
+                        (createPlaylistItem)="audioServiceActions.createPlaylistItem($event)" 
+                        >
                     </artist-list>
               </div>
 		      <div class=" pure-u-1-3 custom-restricted-width">
                     <audio-list
                         [audioList]="(audioList | async)"
-                        [audioBuffer]="(audioBuffer  | async)"
-                        (fetchAudio)="actions$.next(playArtistAction($event))">
+                        (playAudioItem)="actions$.next(playArtistAction($event))"
+                        >
                     </audio-list>
               </div>
 		    </div>
@@ -49,38 +46,20 @@ import {Store, Action, Dispatcher} from "@ngrx/store";
 })
 export class ArtistPlaylistApp {
 
-
     artistList: any;
     audioList: any;
-    audioBuffer:any;
-
-
 
     actions$ = new Subject<Action>();
+    playArtistAction = playAudioItem;
 
-    addArtistToPlaylistAction  = createPlaylistItem;
-    addToPlaylistAction  = addArtistToPlaylist;
-    playArtistAction = fetchAudio;
-
-    constructor(public store: Store<any>) {
-        this.audioBuffer  = store.let(audioSelector);
+    constructor(public store: Store<any>,  private audioServiceActions:AudioServiceAction) {
         this.artistList   = store.let(artistAsArraySelector);
         this.audioList    = store.let(constructedPlaylistItem);
-
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
-       /* this.audioBuffer.subscribe(function(){
-              var audioItemState  = store.getState();
-              console.log("[ArtistPlaylistApp] OUTSIDE audioBuffer audioItemState =", audioItemState);
-              if(audioItemState.audioItem && audioItemState.audioItem.artistAudioBuffer){
-                //  store.dispatch(playAudioItem())
-                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer audioItemState =", audioItemState);
-                  console.log("[ArtistPlaylistApp] INSIDE  audioBuffer rtistAudioBuffer.byteLength ="+audioItemState.audioItem.artistAudioBuffer.byteLength);
-                  store.dispatch(playAudioItem(audioItemState.audioItem))
-              }
-        });*/
     }
+
 
     ngOnDestroy() {
         this.store.unsubscribe();

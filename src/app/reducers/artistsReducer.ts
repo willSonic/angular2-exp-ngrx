@@ -3,7 +3,6 @@ import {Reducer, Action} from "@ngrx/store";
 export const REQUEST_ARTISTS  = 'REQUEST_ARTISTS';
 export const RECEIVED_ARTISTS = 'RECEIVED_ARTISTS';
 export const RECEIVED_ERROR   = 'RECEIVED_ERROR';
-export const CURRENT_ARTISTS = 'CURRENT_ARTISTS';
 
 
 export interface IArtist {
@@ -16,6 +15,9 @@ export interface IArtist {
 
 export const artists: Reducer<{}> = (state: any = {}, action: Action) => {
     switch (action.type) {
+        case REQUEST_ARTISTS:
+             return state;
+
         case RECEIVED_ARTISTS:
             //console.log("artistReducer -- Recieved Artist -action.payload", action.payload);
             return Object.assign({},
@@ -26,7 +28,8 @@ export const artists: Reducer<{}> = (state: any = {}, action: Action) => {
                     return obj;
                 }, {})
             );
-        case CURRENT_ARTISTS:
+
+        case RECEIVED_ERROR:
             return state;
         default:
             return state;

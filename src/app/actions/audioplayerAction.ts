@@ -1,5 +1,5 @@
 import {Action} from "@ngrx/store";
-import {audioItem, IAudiodata} from "../reducers/audioReducer";
+import { IAudiodata} from "../reducers/audioReducer";
 export const PLAY_INITIATED = 'PLAY_INITIATED';
 
 
