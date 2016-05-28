@@ -6,8 +6,10 @@ import {audioItem, IAudiodata} from "../app/reducers/audioReducer";
 export class WebAudioPlayerAPI{
 
     private audioContext: AudioContext;
+    private audioNode:AudioBufferSourceNode;
     private audioBuffer: AudioBuffer;
     private playbackRate: number = 1.0;
+    private gainNode:GainNode;
     private gain: number = 1.0;
 
 
@@ -21,7 +23,11 @@ export class WebAudioPlayerAPI{
     loadAudio(audioItem:any): Observable<any[]>  {
         var ref = this;
         console.log("[WebAudioPlayerAPI] loadAudio  -----  =", audioItem.artistAudioBuffer.audioBuffer);
-
+        if(this.audioBuffer) {
+          if(this.audioNode ) {
+            this.audioNode.stop(0);
+          }
+        }
         return Observable.create(observer=> {
             this.audioContext.decodeAudioData( audioItem.artistAudioBuffer.audioBuffer, function(buffer){
               ref.audioBuffer = buffer;
@@ -36,21 +42,32 @@ export class WebAudioPlayerAPI{
     }
 
     playBuffer(): Array<any> {
-            let bufferSource = this.audioContext.createBufferSource();
+            this.audioNode = this.audioContext.createBufferSource();
             console.log("this.audioBuffer.length ="+this.audioBuffer.length);
             console.log("this.audioBuffer.duration ="+this.audioBuffer.duration);
-            bufferSource.buffer = this.audioBuffer;
-            bufferSource.playbackRate.value = this.playbackRate;
+            this.audioNode.buffer = this.audioBuffer;
+            this.audioNode.playbackRate.value = this.playbackRate;
     
-            let gainNode = this.audioContext.createGain();
-            gainNode.gain.value = this.gain;
+            this.gainNode = this.audioContext.createGain();
+            this.gainNode.gain.value = this.gain;
     
-            bufferSource.connect(gainNode);
-            gainNode.connect(this.audioContext.destination);
+            this.audioNode.connect(this.gainNode);
+            this.gainNode.connect(this.audioContext.destination);
     
-            bufferSource.start(0);
+            this.audioNode.start(0);
             return [ {'playStart':true}];
     }
+
+    stopBuffer(): Array<any>{
+           if(this.audioBuffer) {
+              if(this.audioNode ) {
+                this.audioNode.stop(0);
+                this.audioNode = null;
+              }
+            }
+            return [ {'playStop':true}];
+    }
+
 }
 
 export var webAudioPlayerAPIInjectables: Array<any> = [

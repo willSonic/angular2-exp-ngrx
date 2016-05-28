@@ -5,7 +5,7 @@ import { getArtists } from "./actions/artistsAction";
 import { playAudioItem } from "./actions/audioplayerAction";
 import { AudioServiceAction } from "./actions/audioServiceAction";
 import { artistAsArraySelector } from "./selectors/artist.selector";
-import { constructedPlaylistItem } from "./selectors/playlist.selector";
+import { constructedPlaylistItem, playlistArraySelector } from "./selectors/playlist.selector";
 import {AsyncPipe } from "@angular/common";
 import { Subject } from 'rxjs';
 import {Store, Action} from "@ngrx/store";
@@ -44,22 +44,31 @@ import {Store, Action} from "@ngrx/store";
     pipes: [AsyncPipe],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ArtistPlaylistApp {
+export class ArtistPlaylistApp{
 
     artistList: any;
     audioList: any;
-
+    playlist:any;
     actions$ = new Subject<Action>();
     playArtistAction = playAudioItem;
 
+    private subscription;
+
+
     constructor(public store: Store<any>,  private audioServiceActions:AudioServiceAction) {
         this.artistList   = store.let(artistAsArraySelector);
+        /*this.playlist     = store.let(playlistArraySelector).subscribe((val) =>{
+                                                                     console.log('[ArtistPlaylistApp] playlist  change',val)
+                                                                   });*/
         this.audioList    = store.let(constructedPlaylistItem);
+        /*this.subscription  = store.select('playlist').subscribe((val) =>{
+                                                                     console.log('[ArtistPlaylistApp] subscription  change',val)
+                                                                   });*/
+
         this.actions$.subscribe(store);
         this.actions$.next(getArtists());
 
     }
-
 
     ngOnDestroy() {
         this.store.unsubscribe();

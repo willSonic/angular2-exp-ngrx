@@ -46,7 +46,7 @@ export const audioItem: Reducer<IAudiodata> = (state: IAudiodata = initalAudioDa
                                     state,
                                     action.payload
                                     );
-        
+
         default:
             return state;
     }

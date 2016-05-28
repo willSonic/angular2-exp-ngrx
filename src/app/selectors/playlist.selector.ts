@@ -5,14 +5,25 @@ import {artistSelector } from './artist.selector';
 import { audioSelector} from './audio.selector';
 
 
+const getAudioItem = (store: any) => store.select(STORE_SLICE_NAME)
+           .map(state => state.audioList).map(audioItem =>audioItem.isPlaying).distinctUntilChanged(function(x){
+               console.log("[playlist.selector] --getAudioItem x = ",x);
+               return x;
+               });
+
 export const playlistArraySelector = (store: any) => store.select(STORE_SLICE_NAME)
                        .map(res => res.audioList);
 
+export const playlistArrayItemSelector = (store: any) => store.select(STORE_SLICE_NAME)
+                       .map(state => state.audioList).map(audioItem => audioItem.isPlaying).distinctUntilChanged();
 
 export const constructedPlaylistItem = (store: any) => Observable
-    .combineLatest(store.let(playlistArraySelector), store.let(artistSelector), store.let(audioSelector))
+    .combineLatest(store.let(playlistArraySelector),
+                   store.let(artistSelector),
+                   store.let(audioSelector),
+                   store.let(getAudioItem))
     .map((res: any) => {
-         // console.log("[playlist.selector] --constructedPlaylistItem- playlistArraySelector --res[0] ", res[0]);
+        console.log("[playlist.selector] --constructedPlaylistItem- playlistArraySelector --res[0] ", res[0]);
          // console.log("[playlist.selector] --constructedPlaylistItem- artistSelector --res[1] ", res[1]);
          // console.log("[playlist.selector] --constructedPlaylistItem- audioSelector --res[2] ", res[2]);
 
@@ -34,6 +45,7 @@ export const constructedPlaylistItem = (store: any) => Observable
             // console.log("playlist.selector] --constructedPlaylistItem --valueer --playList ", playList);
             return playList;
         }else{
+        console.log("[playlist.selector] -- constructedPlaylistItem -- DEFAULT");
            return playList;
         }
     });

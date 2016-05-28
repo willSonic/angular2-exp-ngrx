@@ -7,7 +7,8 @@ import {IAudiodata} from "../reducers/audioReducer";
     directives: [NgClass],
     template: `
     <li class="margin-t-20">
-        <button class="pure-button pure-button-primary" [ngClass]="{active: isLoaded}"
+        <h3>isPlaying == {{audioItem.isPlaying}}</h3>
+        <button class="pure-button pure-button-primary" [ngClass]="{active: audioItem.isPlaying}"
             (click)="playAudioItem.emit(audioItem)">{{audioItem.artist.trackTitle}}
         </button>
     </li>
